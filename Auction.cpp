@@ -56,18 +56,16 @@ void add_auction(ProductList& productList)
 	string auction_code;
 
 	srand(time(NULL));
-	char code[3];
 
 	for (int i = 0; i < 3; i++) {
 		int los = rand() % 36;
 		if (los < 10) {
-			code[i] = '0' + los;
+			auction_code.push_back('0' + los);
 		}
 		else {
-			code[i] = 'a' + los - 10;
+			auction_code.push_back('a' + los - 10);
 		}
 	}
-	auction_code = code;
 
 	while (true)
 	{
@@ -147,6 +145,6 @@ int main()
 	ProductList list = ProductList();
 	list.get_data("ProductList.txt");
 
-	remove_auction(list);
+	add_auction(list);
 }
 
