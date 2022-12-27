@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -29,33 +30,19 @@ void ProductList::add_product(shared_ptr<Product>& product, string filename)
 
 void ProductList::remove_product(string auction_number, string filename)
 {
-	size_t size = m_data.size();
-	size_t position;
-
-	for (size_t i = 0; i < size; ++i)
-	{
-		if (m_data[i]->get_auction_number() == auction_number)
-		{
-			m_data.erase(m_data.begin() + i);
-			m_data.resize(size - 1);
-			position = i;
-			break;
-		}
-	}
+	auto it = remove_if(m_data.begin(), m_data.end(), [&](const shared_ptr<Product>& product) { return product->get_auction_number() == auction_number; });
+	m_data.erase(it);
 
 	ofstream file(filename);
 
 	if (file.is_open())
 	{
-		size_t loop = 1;
-
-		for (auto v : m_data)
+		for (const auto& v : m_data)
 		{
 			
 			file << v->get_auction_number() << endl;
 			file << v->get_name() << endl;
 			file << v->get_price();
-			loop++;
 		}
 	}
 
@@ -93,7 +80,6 @@ void ProductList::get_data(string filename)
 			product->set_name(line);
 			getline(file, line);
 			product->set_price(line);
-			getline(file, line);
 
 			m_data.push_back(product);
 		}

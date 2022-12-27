@@ -145,6 +145,7 @@ int main()
 	ProductList list = ProductList();
 	list.get_data("ProductList.txt");
 
-	add_auction(list);
+	//add_auction(list);
+	remove_auction(list);
 }
 
